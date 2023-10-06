@@ -1,0 +1,18 @@
+apiVersion: skaffold/v4beta3
+kind: Config
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: asusrid/auth
+      context: auth
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            # the . means: take the code from the src and put it in wherever the dockerfile in the container says to save it
+            dest: .
+      docker:
+        dockerfile: Dockerfile
